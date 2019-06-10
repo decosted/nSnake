@@ -156,7 +156,6 @@ private:
 	std::vector<ScoreEntry>	entries;
 	
 	//added functions by david decoste
-	ScoreEntryReplacer();
 	PickHighestScore();
 	AddScoreEntrytoFile();
 };
