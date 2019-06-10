@@ -12,6 +12,13 @@ int Board::medium_height = 14;
 int Board::large_width  = 78;
 int Board::large_height = 21;
 
+
+//////////////////////////////////////////////////////////////////////////////
+//A potential fix here is to check if the board loaded fixes the dimensional//
+//requirements, if it doesnt then do not load the board.										//
+//////////////////////////////////////////////////////////////////////////////
+
+//Sets the boards dimensions
 Board::Board(int width, int height, Style style):
 	style(style),
 	start_x(BOARD_DEFAULT_PLAYER_X),
@@ -25,6 +32,8 @@ Board::~Board()
 {
 	delete this->board;
 }
+
+//Is the boarder set?  Verifies
 bool Board::isBorder(int x, int y)
 {
 	if ((x == 0) || (x == (int)this->board->width()  - 1) ||
@@ -33,6 +42,8 @@ bool Board::isBorder(int x, int y)
 
 	return false;
 }
+
+
 bool Board::isWall(int x, int y)
 {
 	if (isBorder(x, y))
@@ -77,6 +88,8 @@ void Board::draw(Window* win)
 		}
 	}
 }
+
+//Randomly fills the room with walls 
 void Board::randomlyFillExceptBy(int x, int y)
 {
 	for (size_t i = 0; i < (this->board->width()); i++) {
@@ -92,6 +105,8 @@ void Board::randomlyFillExceptBy(int x, int y)
 	for (int i = -2; i != 7; i++)
 		this->board->set(x + i, y, false);
 }
+
+//Function will teleport the player if such settings are initialized
 void Board::teleport(Player* player)
 {
 	// If we don't teleport,
@@ -126,6 +141,8 @@ void Board::teleport(Player* player)
 
 	player->moveTo(newx, newy);
 }
+
+//Clears board
 void Board::clear()
 {
 	// Making it empty
@@ -133,6 +150,8 @@ void Board::clear()
 		for (size_t j = 0; j < this->board->height(); j++)
 			this->board->set(i, j, false);
 }
+
+//Sets NEW board
 void Board::setBoard(std::vector<std::vector<bool> >& newBoard)
 {
 	// Making it empty
@@ -141,24 +160,31 @@ void Board::setBoard(std::vector<std::vector<bool> >& newBoard)
 			this->board->set(i, j, newBoard[j][i]);
 }
 
+//Once empty get the starting x position
 int Board::getStartX()
 {
 	return this->start_x;
 }
+
+//once empty get the starting y position
 int Board::getStartY()
 {
 	return this->start_y;
 }
 
+//function here will take the starting x position and set it 
 void Board::setStartX(int x)
 {
 	this->start_x = x;
 }
+
+//function here will take the starting y position and set it
 void Board::setStartY(int y)
 {
 	this->start_y = y;
 }
 
+//Function here sets all the data onto board
 void Board::setMetadata(std::string name, std::string value)
 {
 	this->metadata[name] = value;
@@ -170,10 +196,16 @@ std::string Board::getMetadata(std::string name)
 
 	return this->metadata[name];
 }
+
+//Does the board have all metadata necessary?  Verifies here
 bool Board::hasMetadata(std::string name)
 {
 	return (this->metadata.find(name) != this->metadata.end());
 }
+
+//From here on out are all of the fucntions that will move the snake
+//around the board including left right up and down
+
 void Board::scrollLeft()
 {
 	// Going line by line from top to bottom
@@ -190,6 +222,7 @@ void Board::scrollLeft()
 		this->board->set(this->board->width() - 2, j, tmp);
 	}
 }
+
 void Board::scrollRight()
 {
 	// Going line by line from top to bottom
@@ -206,6 +239,13 @@ void Board::scrollRight()
 		this->board->set(1, j, tmp);
 	}
 }
+
+
+////////////////////////////////////////////////////////////////////////
+//A potential later patch here could be to add "waits" in the Function//
+//for up and down so that they could match the speed of the horizontal//
+//direction																														//
+////////////////////////////////////////////////////////////////////////
 void Board::scrollUp()
 {
 	// Going line by line from left to right
@@ -222,6 +262,12 @@ void Board::scrollUp()
 		this->board->set(j, this->board->height() - 2, tmp);
 	}
 }
+
+////////////////////////////////////////////////////////////////////////
+//A potential later patch here could be to add "waits" in the Function//
+//for up and down so that they could match the speed of the horizontal//
+//direction																														//
+////////////////////////////////////////////////////////////////////////
 void Board::scrollDown()
 {
 	// Going line by line from left to right
